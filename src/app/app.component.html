@@ -1,0 +1,180 @@
+<div style="text-align:center">
+  <div class="shadow-lg p-3 mb-5 bg-white rounded">
+    <h1 class="display-4">Welcome to {{ title }}!</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 offset-sm-2">
+      <select (change)="onChange($event.target.value)" class="browser-default custom-select">
+        <option selected value="0">Please select a Year</option>
+        <option (click)="getInformation(2019)" value="2019">2019</option>
+        <option (click)="getInformation(2018)" value="2018">2018</option>
+        <option (click)="getInformation(2017)" value="2017">2017</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <select (change)="onChangeMonth($event.target.value)" class="browser-default custom-select" ng-model="Months">
+        <option selected value="0" (click)="hideStatement(0)">Please select a Month</option>
+        <option *ngFor="let m of Months; let i = index" value="{{m.Id}}">{{ m.Month }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="row m-2" *ngIf="showData">
+  <div class="col-6 offset-3">
+    <div class="card">
+      <div class="card-title bg-primary text-white d-flex justify-content-center alert alert-info">
+        {{titleDate}}
+      </div>
+      <div class="card-body">
+        <div class="card">
+          <div class="card-title alert alert-info">
+            <div class="row">
+              <div class="col-8 d-flex justify-content-center">
+                Title
+              </div>
+              <div class="col-4 d-flex justify-content-center">
+                Amount
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Property Income
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.actualMaintenance)}">
+                {{returnedNumber(Selected.actualMaintenance)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start" >
+                Recoveries (excl W&E&S)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.actualMaintenance)}">
+                {{returnedNumber(Selected.recoverisExclWES)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Municipal Costs (Excl W&E&S)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.municipalCostsExclWES)}">
+                {{returnedNumber(Selected.municipalCostsExclWES)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Property Expenses (Excl Maintenance)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.propertyExpenseExclMain)}">
+                {{returnedNumber(Selected.propertyExpenseExclMain)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Maintenance @ 3% of Property Income
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.maintenanceAt3Perc)}">
+                {{returnedNumber(Selected.maintenanceAt3Perc)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Actual Maintenance
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.actualMaintenance)}">
+                {{returnedNumber(Selected.actualMaintenance)}}
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Recoveries (Water & Elec & Sanitation)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.recoveriesWES)}">
+                {{returnedNumber(Selected.recoveriesWES)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Municipal Costs (Water & Elec & Sani)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.municipalCostsWEC)}">
+                {{returnedNumber(Selected.municipalCostsWEC)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Net Income
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.netIncome),'border-style':'groove', 'border-width':'1px'}">
+                {{returnedNumber(Selected.netIncome)}}
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Expense % (Excl W/E/S with 3% Maintenanc
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.expensePerc)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Recoveries (W/E/S)
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.recoveriesWESPerc)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Recoveries (Other)
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.recoveriesOtherPerc)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Maintenance (Actual vs 3%)
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.maintenanceActualVS3perc)}}
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Capitalisation Rate
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.capitalisationRate)}}
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Prop Adjustments
+              </div>
+              <div class="col-4 d-flex justify-content-end">
+                {{returnedPercentage(Selected.propAdjustments)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 d-flex justify-content-start">
+                Property Valuation - Current Valuation (A)
+              </div>
+              <div class="col-4 d-flex justify-content-end" [ngStyle]="{'color': setColor(Selected.propertyValuation),'border-style':'groove', 'border-width':'1px'}">
+                {{returnedNumber(Selected.propertyValuation)}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
