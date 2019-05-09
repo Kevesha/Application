@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';;
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map} from 'rxjs/operators';
 
-const endpoint = 'http://www.gizmoserver-dev.eu-west-1.elasticbeanstalk.com';
+const endpoint = 'https://www.gizmoserver-dev.eu-west-1.elasticbeanstalk.com';
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
