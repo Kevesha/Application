@@ -28,6 +28,7 @@ export class AppComponent {
     this.appService.getData(Year).subscribe((res: Information[]) => {
       this.returnedInfo = res;
     });
+
     if (this.Year !== 2019) {
       this.Months = [
         {
@@ -106,28 +107,21 @@ export class AppComponent {
   }
 
   returnedNumber(val: string) {
+    console.log(val,"***")
     const money = parseInt(val, 10);
-    var converingNumber = val;
+    const converingNumber = new Intl.NumberFormat("en-LS", {
+      style: "currency",
+      currency: "ZAR"
+    });
     if (money > 0) {
-      converingNumber = new Intl.NumberFormat("en-LS", {
-        style: "currency",
-        currency: "ZAR"
-      }).format(Math.round(money / 10) * 10);
-      return `${converingNumber}`;
+      return `${converingNumber.format(Math.round(money / 10) * 10)}`;
     }
     if (money < 0) {
-      converingNumber = new Intl.NumberFormat("en-LS", {
-        style: "currency",
-        currency: "ZAR"
-      }).format(Math.round((money * -1) / 10) * 10);
-      return `(${converingNumber})`;
+      return `(${converingNumber.format(Math.round((money * -1) / 10) * 10)})`;
     }
+
     if (money === 0) {
-      converingNumber = new Intl.NumberFormat("en-LS", {
-        style: "currency",
-        currency: "ZAR"
-      }).format(money);
-      return `(${converingNumber})`;
+      return `(${converingNumber.format(money)})`;
     }
   }
 
@@ -145,9 +139,7 @@ export class AppComponent {
   }
 
   returnedPercentage(val: string) {
-    var pointNum = parseFloat(val);
-    var finalPercentage = (pointNum * 100).toFixed(2);
-    return finalPercentage + "%";
+    return `${(parseFloat(val) * 100).toFixed(2)}%`;
   }
 
   onChange(event) {

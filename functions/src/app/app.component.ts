@@ -16,6 +16,7 @@ export class AppComponent {
   Selected: any;
   titleDate: string;
   showData: boolean = false;
+  showMonths: boolean = false;
 
   constructor(
     public appService: AppService
@@ -27,7 +28,7 @@ export class AppComponent {
     this.appService.getData(Year).subscribe((res: Information[]) => {
       this.returnedInfo = res;
     });
-    if (this.Year != 2019) {
+    if (this.Year !== 2019) {
       this.Months = [
         {
           Id: 1,
@@ -121,7 +122,7 @@ export class AppComponent {
       }).format(Math.round((money * -1) / 10) * 10);
       return `(${converingNumber})`;
     }
-    if (money == 0) {
+    if (money === 0) {
       converingNumber = new Intl.NumberFormat("en-LS", {
         style: "currency",
         currency: "ZAR"
@@ -138,7 +139,7 @@ export class AppComponent {
     if (money < 0) {
       return "#FF0404";
     }
-    if (money == 0) {
+    if (money === 0) {
       return "#20B2AA";
     }
   }
@@ -151,17 +152,18 @@ export class AppComponent {
 
   onChange(event) {
     const year = parseInt(event, 10);
+    this.showMonths = false;
+    this.showData = false;
     if (year > 0) {
+      this.showMonths = true;
       this.getInformation(year);
     }
   }
 
   onChangeMonth(event) {
-    if((parseInt(event, 10))==0){
-      this.showData = false;
-    }
+    this.showData = false;
     if (this.Year > 0) {
-        this.titleDate = this.Year + " " + this.Months[parseInt(event, 10) - 1].Month;
+        this.titleDate = `${this.Year} ${this.Months[parseInt(event, 10) - 1].Month}`;
         this.Selected = this.returnedInfo[parseInt(event, 10) - 1];
         if (this.titleDate != null) {
           this.showData = true;
